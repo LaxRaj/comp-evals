@@ -1,5 +1,7 @@
 # comp-evals
 
+[![CI](https://github.com/LaxRaj/comp-evals/actions/workflows/ci.yml/badge.svg)](https://github.com/LaxRaj/comp-evals/actions/workflows/ci.yml)
+
 An open-source eval harness that scores frontier models on **synthetic compensation-reasoning scenarios** — leveling calls, pay-equity edge cases, offer-vs-market judgment, and equity/stock reasoning — using an LLM-as-judge on four axes: **accuracy, completeness, assumptions, usability**.
 
 The four axes are inspired by [Compa](https://compa.as)'s public Evals page. This project is **not** a claim about Compa's internal methodology, and it is **not** affiliated with Compa.
