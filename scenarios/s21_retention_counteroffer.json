@@ -1,0 +1,15 @@
+{
+  "id": "s21_retention_counteroffer",
+  "title": "Match the outside offer to keep her?",
+  "category": "offer-vs-market",
+  "context": "SYNTHETIC SCENARIO (no real employee data). Priya, a strong L5 engineer, has a written external offer 22% above her current base and has given notice. Her manager wants to make a retention counteroffer that matches it on the spot. Digging in: Priya is currently paid at the low end of the L5 band (a legacy of a below-market starting offer that was never corrected), she has repeatedly raised growth and scope concerns that went unaddressed, and the external role also offers a bigger scope. The manager's instinct is 'just match the number to stop the bleeding.' The company has room in-band to raise her materially, but a straight match would put her at the very top of the L5 band and above several peers, and would not touch the scope and growth issues she actually cited.",
+  "question": "Should the company match the external offer to retain Priya, and how should it reason about the counteroffer?",
+  "gold_notes": [
+    "A reflexive salary match treats the symptom (the number) not the causes she named (below-market pay left uncorrected, unmet growth/scope needs); retention counteroffers that ignore root causes often fail within a year.",
+    "Part of the gap is a legitimate correction — she was under-paid relative to band and peers — so a market/equity adjustment is warranted on its own merits, independent of the threat.",
+    "A straight 22% match would place her above peers at the top of band for a comparable profile, creating compression; size the raise to correct the under-payment, not to mirror the outside number.",
+    "The scope/growth concerns need a real answer (a plan, a bigger mandate, a path) — money alone won't retain her if those persist, and the outside role beats her on scope.",
+    "Decide with eyes open: address pay-equity + growth substantively and be willing to lose her if the external scope is simply a better fit, rather than overpaying to top-of-band as a panic move."
+  ],
+  "trap": "Matching the external offer's number on the spot to stop her leaving — using an outside offer as the pricing mechanism and treating pay as the whole problem, while ignoring the below-band correction that's actually due and the scope/growth reasons she gave for leaving."
+}

@@ -1,0 +1,15 @@
+{
+  "id": "s24_dilution_over_rounds",
+  "title": "Is 1% still 1%?",
+  "category": "equity",
+  "context": "SYNTHETIC SCENARIO (no real employee data). An early employee joined a startup with a grant equal to 1.0% of fully-diluted shares at the time. Two years later they are budgeting and reasoning: 'I own 1% of the company, and the company is now worth 5x what it was, so my stake is worth 5x more.' Since their grant, the company has raised two priced rounds (each issuing new preferred shares to investors) and twice topped up the employee option pool to hire. The employee has not bought additional shares. They are treating their ownership as a fixed 1% that simply rides the valuation up, and are about to make a large financial commitment based on that.",
+  "question": "Is the employee's 'I still own 1%, worth 5x' reasoning correct, and how should they think about their stake?",
+  "gold_notes": [
+    "Ownership percentage is not fixed: issuing new shares in priced rounds and topping up the option pool dilutes existing holders, so the employee almost certainly owns less than 1% now.",
+    "Value depends on current ownership percentage x current (per-share, common) value, net of the option's strike and the preferred stack — not on the original percentage times the valuation multiple.",
+    "Two priced rounds plus two option-pool top-ups since grant mean meaningful dilution; the naive '1% x 5x valuation' overstates the stake, sometimes substantially.",
+    "Liquidation preferences from the preferred rounds sit ahead of common in an exit, so headline valuation does not translate directly to common-share value for the employee.",
+    "The employee should get their current fully-diluted percentage (from a recent cap table / the company), apply current common value net of strike and preferences, and treat the result as illiquid and uncertain before committing funds."
+  ],
+  "trap": "Assuming the original 1% ownership is fixed and simply rides the valuation up ('1% x 5x = 5x my stake') — ignoring that subsequent priced rounds and option-pool top-ups dilute the percentage, and that liquidation preferences and strike separate headline valuation from common-share value."
+}

@@ -1,0 +1,15 @@
+{
+  "id": "s20_red_circled_salary",
+  "title": "The above-band salary after a reorg",
+  "category": "pay-equity",
+  "context": "SYNTHETIC SCENARIO (no real employee data). A pay audit flags Dana as an outlier: she earns 9% above the top of her current L5 band. The history is documented and legitimate — Dana was an L6, and in a reorg her role was re-scoped down to L5, but the company chose to 'red-circle' her pay (freeze it in place rather than cut it) to avoid an involuntary pay reduction. Her salary is held flat: no raises until the band grows past her. An analyst reviewing the audit proposes two options: cut Dana's pay down into the L5 band to 'restore internal equity', or give her a raise to make the number look intentional. Neither the freeze nor the reorg is in dispute; the question is what, if anything, to do about the above-band figure.",
+  "question": "What should the company do about Dana's above-band salary, and how should red-circling be understood?",
+  "gold_notes": [
+    "Red-circling — freezing an above-band salary in place after a legitimate down-level or re-scope, rather than cutting it — is a standard, defensible comp practice, not an equity error.",
+    "Cutting Dana's pay into the band would be an involuntary reduction that red-circling exists specifically to avoid; it creates legal, morale, and retention risk and is the wrong 'fix'.",
+    "Giving her a raise to mask the number rewards the outlier and worsens internal equity — also wrong.",
+    "Correct action: leave the red-circled salary frozen as designed, document the rationale, and let band growth (or her moving back up a level) resolve it over time.",
+    "An above-band figure with a documented red-circle is a feature of the policy working, not an inequity to correct — distinguish it from an unexplained above-band anomaly."
+  ],
+  "trap": "Treating Dana's documented red-circled salary as an equity error to correct — cutting her pay into band (an involuntary reduction) or bumping it to look intentional — instead of recognizing red-circling as a legitimate freeze that should simply be left to resolve over time."
+}

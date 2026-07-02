@@ -12,10 +12,10 @@ from comp_evals.loader import load_all_scenarios
 from comp_evals.models import Scenario
 
 EXPECTED_CATEGORY_COUNTS = {
-    "leveling": 4,
-    "pay-equity": 4,
-    "offer-vs-market": 4,
-    "equity": 4,
+    "leveling": 6,
+    "pay-equity": 6,
+    "offer-vs-market": 6,
+    "equity": 6,
 }
 EXPECTED_TOTAL = sum(EXPECTED_CATEGORY_COUNTS.values())
 

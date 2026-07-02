@@ -1,0 +1,15 @@
+{
+  "id": "s19_small_sample_gap",
+  "title": "A flagged gap in a group of three",
+  "category": "pay-equity",
+  "context": "SYNTHETIC SCENARIO (no real employee data). An automated pay-equity dashboard flags that, among Level-6 principal designers, the one woman earns 16% less than the average of the two men. That's the entire population at that level: three people. Leadership splits into two camps. One insists this is clear evidence of gender discrimination and wants an immediate correction. The other waves it off: 'Three people, one of each comparison — that's statistically meaningless, ignore it.' There is no regression to run and no larger cohort. The three have differing tenures, specializations, and last-promotion dates, none of which has yet been examined. The company wants a defensible, honest way to handle the flag.",
+  "question": "How should the company handle this flag, and what is wrong with both camps' positions?",
+  "gold_notes": [
+    "n=3 is far too small for any statistical inference — you can neither conclude discrimination nor conclude 'nothing here' from the number alone.",
+    "The right response to a tiny-sample flag is an individualized review of the three cases (tenure, specialization, promotion timing, performance, any bona fide factors), not a statistical verdict.",
+    "'It's clearly discrimination' overclaims from noise; 'it's statistically meaningless, ignore it' wrongly treats un-analyzed individual pay as automatically fine — both skip the actual work.",
+    "If the individualized review surfaces an unexplained gap, remediate it upward and document the reasoning; if legitimate factors fully explain it, document that instead.",
+    "Small samples call for case-by-case scrutiny and documentation, precisely because statistics can't adjudicate them."
+  ],
+  "trap": "Drawing a conclusion from n=3 in either direction — declaring it proof of discrimination, or dismissing it as statistically meaningless and ignoring it — instead of doing the individualized, documented review a tiny sample actually requires."
+}

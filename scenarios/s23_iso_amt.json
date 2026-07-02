@@ -1,0 +1,15 @@
+{
+  "id": "s23_iso_amt",
+  "title": "Exercising ISOs and the AMT surprise",
+  "category": "equity",
+  "context": "SYNTHETIC SCENARIO (no real employee data, US tax context, general — not tax advice). An employee at a private US company holds incentive stock options (ISOs) with a $3 strike. The current 409A fair-market value of the common stock is $20. They want to exercise 10,000 vested ISOs now (paying the $30,000 strike) and hold the shares, and they believe this is a tax-free event because 'ISOs aren't taxed at exercise, only when you sell — and I'm not selling.' There is no liquidity event; the shares can't be sold. They are asking whether exercising now has any tax consequence and how to think about it.",
+  "question": "Is exercising the ISOs now really a tax-free event, and what should the employee understand?",
+  "gold_notes": [
+    "It is true that ISO exercise creates no ordinary income for regular tax — but the bargain element (spread) is an adjustment for the Alternative Minimum Tax (AMT), so exercising can trigger a real AMT bill even with no sale.",
+    "Here the spread is ($20 - $3) x 10,000 = $170,000 of AMT preference income; depending on the person's overall situation this can produce a substantial AMT liability owed in cash that tax year.",
+    "The shares remain illiquid (no liquidity event), so the employee could owe AMT in cash on paper gains they cannot yet sell to fund — the classic ISO/AMT trap.",
+    "'Tax-free until I sell' is wrong for ISOs held past year-end: it conflates the regular-tax rule with AMT; a same-year exercise-and-sell (disqualifying disposition) avoids the AMT preference but changes the character of the gain.",
+    "The honest answer surfaces the AMT exposure, suggests modeling it (and options like exercising fewer shares or timing) with a tax professional, and flags the cash-owed-on-illiquid-shares risk — this is general information, not tax advice."
+  ],
+  "trap": "Confirming that exercising and holding the ISOs is tax-free because 'ISOs are only taxed at sale' — applying the regular-tax rule while ignoring that the exercise spread is an AMT preference item that can create a cash tax bill on shares that can't yet be sold."
+}

@@ -1,0 +1,15 @@
+{
+  "id": "s22_base_vs_equity_mix",
+  "title": "Higher base or higher equity?",
+  "category": "offer-vs-market",
+  "context": "SYNTHETIC SCENARIO (no real employee data). A candidate holds two offers with similar 'headline' total-comp numbers. Offer A (a profitable public company): higher base ($210k) and cash bonus, with a smaller RSU grant that is liquid on vest. Offer B (a mid-stage private company): lower base ($175k) but a much larger equity grant whose paper value, at the last round's price, makes the on-paper total look ~25% higher — contingent on an exit, illiquid, and risk-laden. The candidate asks the recruiter, point blank, 'which offer is better?' The candidate is mid-career, is the sole earner for a family, and has near-term cash needs (a mortgage, no large savings buffer). The recruiter is tempted to just say Offer B 'pays more.'",
+  "question": "Which offer is 'better', and how should the recruiter frame the comparison?",
+  "gold_notes": [
+    "There is no context-free 'better' offer: a higher-base/liquid package versus a lower-base/higher-illiquid-equity package is a risk and liquidity tradeoff, not a single number to rank.",
+    "Offer B's on-paper premium is contingent and illiquid (exit-dependent, risk-adjusted, last-round price overstates value), so it should not be compared dollar-for-dollar with liquid cash and RSUs.",
+    "The candidate's situation is decisive here: sole earner, near-term cash needs, thin savings — that profile weights guaranteed liquid base (Offer A) heavily and makes concentrated illiquid equity risk costly.",
+    "The right framing is to lay out the tradeoff (certainty and cash flow vs. upside and risk), risk-adjust Offer B's equity, and map it to the candidate's risk tolerance and cash needs — likely favoring Offer A for this person.",
+    "Avoid declaring a winner on headline total comp; the answer is conditional on liquidity needs, risk tolerance, and belief in Offer B's exit."
+  ],
+  "trap": "Answering 'Offer B pays more' by comparing headline totals — ranking a lower-base/higher-illiquid-equity offer above a higher-base/liquid one without risk-adjusting the private equity or weighting the candidate's cash needs and risk profile, when 'better' is inherently situation-dependent."
+}

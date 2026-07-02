@@ -1,0 +1,15 @@
+{
+  "id": "s18_leveling_not_an_average",
+  "title": "Strong on three dimensions, absent on the fourth",
+  "category": "leveling",
+  "context": "SYNTHETIC SCENARIO (no real employee data). Ravi is up for L6/staff. This company's L6 rubric has four core, non-negotiable dimensions: (1) technical depth, (2) cross-org influence, (3) driving technical strategy, and (4) sustained delivery of ambiguous, high-impact work. Ravi is exceptional — well above the L6 bar — on technical depth, cross-org influence, and sustained delivery. On the fourth, driving technical strategy, there is no evidence: he executes strategy others set and has not originated org-level technical direction. A calibration reviewer proposes: 'He's outstanding on three of four and only average-to-absent on one, so on balance he clears L6 — the strengths more than compensate.' The rubric describes the four dimensions as requirements a staff engineer must all meet, not a weighted scorecard to average.",
+  "question": "Does Ravi meet the L6 bar, and how should the four dimensions be applied?",
+  "gold_notes": [
+    "When a rubric defines core dimensions as requirements (must-haves), leveling is gated by the weakest core dimension, not the average — a missing must-have caps the level.",
+    "Ravi has no evidence on 'driving technical strategy', a stated core L6 requirement, so exceptional performance elsewhere does not backfill that gap.",
+    "Treating the rubric as a weighted average lets strengths mask an unmet requirement — that is a leveling error, not generosity.",
+    "Correct call: not yet L6; place at L5 (likely top of band given his strengths) with a development path targeting the specific missing dimension (originating org-level technical strategy).",
+    "Distinguish 'compensating strengths' (valid for a scorecard) from 'unmet requirement' (a gate) — core rubric dimensions are gates."
+  ],
+  "trap": "Averaging across the four dimensions — 'outstanding on three, weak on one, so on balance L6' — when the rubric defines them as must-have requirements, so an unmet core dimension should cap the level rather than being outweighed by strengths."
+}

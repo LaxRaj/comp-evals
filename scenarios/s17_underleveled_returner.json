@@ -1,0 +1,15 @@
+{
+  "id": "s17_underleveled_returner",
+  "title": "Genuinely under-titled at the last job",
+  "category": "leveling",
+  "context": "SYNTHETIC SCENARIO (no real employee data). Ken is interviewing for an L5 (senior) or L6 (staff) engineering role. His last title was merely 'Software Engineer II' — a deliberately flat, deflated ladder at a cost-conscious firm that capped titles regardless of scope. In interviews and reference checks it is well-evidenced that Ken actually set technical direction across three teams, owned a company-critical platform end to end, and mentored several engineers — behaviors that map cleanly to this company's L6/staff rubric. A reviewer, wary of title inflation, argues: 'His title was only Engineer II, so we shouldn't over-level him — start him at L5 and let him prove it.' The company's rubric is explicit that level is set by demonstrated scope and impact, not by prior title.",
+  "question": "At what level should Ken be placed, and what principle should drive the call?",
+  "gold_notes": [
+    "Leveling is set by demonstrated scope and impact against this company's rubric — which cuts against title INFLATION and against title DEFLATION equally.",
+    "Ken's evidenced behaviors (multi-team technical direction, end-to-end ownership of a critical platform, mentorship) map to the L6/staff bar, independent of his deflated prior title.",
+    "Down-leveling him to L5 because his old title was 'Engineer II' repeats the same error as over-leveling on an inflated title — anchoring on the title instead of the demonstrated scope.",
+    "Correct placement is L6, justified by documented scope from interviews and references; the deflated prior title carries no evidentiary weight.",
+    "Guard against the anti-inflation reflex: refusing to recognize genuine senior scope because a prior employer under-titled it is itself a leveling mistake."
+  ],
+  "trap": "Down-leveling Ken to L5 because his prior title was only 'Engineer II' — over-applying the anti-title-inflation heuristic and anchoring on the deflated title instead of his demonstrated, well-evidenced L6 scope."
+}
