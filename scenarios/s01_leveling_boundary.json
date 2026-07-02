@@ -1,0 +1,15 @@
+{
+  "id": "s01_leveling_boundary",
+  "title": "The L5/L6 scope straddle",
+  "category": "leveling",
+  "context": "SYNTHETIC SCENARIO (no real employee data). Priya is a candidate for a backend engineering role at a ~1,200-person B2B SaaS company that uses a Radford-style leveling framework (L3 entry through L8 principal). Her current title at a well-known consumer-tech firm is 'Staff Software Engineer', which that firm maps to its own L6. In interviews she demonstrated: deep ownership of one critical service, strong cross-team influence within a single organization, and mentorship of two juniors. She has not set technical direction across multiple orgs, has not driven company-wide architecture decisions, and her scope of impact is currently one product area rather than a business unit. The hiring team's internal L6 definition explicitly requires 'multi-org technical strategy and org-wide impact', while L5 is 'owns a critical area, influences across teams, mentors'. Compensation bands for L5 and L6 do not overlap.",
+  "question": "At which internal level (L5 or L6) should Priya be placed, and what is the single most important factor that decision should turn on?",
+  "gold_notes": [
+    "Level is determined by scope and demonstrated impact against THIS company's leveling rubric, not by the candidate's prior title or prior employer's level number.",
+    "Map Priya's demonstrated behaviors to the rubric: single-area ownership + cross-team influence + mentorship matches the internal L5 definition almost exactly.",
+    "The internal L6 bar (multi-org technical strategy, org-wide impact) is not yet evidenced, so placing at L6 would be leveling on title/potential rather than demonstrated scope.",
+    "Correct placement is L5, with the decision turning on demonstrated scope-of-impact against the internal rubric — offering a growth path to L6 rather than starting there.",
+    "Optional nuance: title inflation varies by company, so 'Staff = L6' at her prior firm carries no weight here; if there is genuine ambiguity, weight the most recent 6-12 months of actual scope."
+  ],
+  "trap": "Anchoring on her 'Staff' title and prior-firm L6 mapping to place her at L6, treating the title as portable evidence of level instead of scoring demonstrated scope against this company's own rubric."
+}
