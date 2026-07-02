@@ -31,11 +31,31 @@ def test_append_and_completed_pairs_roundtrip(tmp_path, monkeypatch) -> None:
     assert {g.total for g in loaded} == {8}
 
 
-def test_write_raw_persists_response(tmp_path, monkeypatch) -> None:
+def test_write_and_read_raw_roundtrip(tmp_path, monkeypatch) -> None:
     monkeypatch.setattr(results, "RESULTS_ROOT", tmp_path)
     d = results.ensure_run_dir("run_test")
+    assert results.read_raw(d, "s01_leveling_boundary", "claude") is None
     results.write_raw(d, "s01_leveling_boundary", "claude", "the answer")
     assert (d / "raw" / "s01_leveling_boundary__claude.txt").read_text() == "the answer"
+    assert results.read_raw(d, "s01_leveling_boundary", "claude") == "the answer"
+
+
+def test_grade_counts_by_scenario_model_judge(tmp_path, monkeypatch) -> None:
+    monkeypatch.setattr(results, "RESULTS_ROOT", tmp_path)
+    d = results.ensure_run_dir("run_test")
+
+    def g(sid, model, judge):
+        scores = [AxisScore(axis=a, score=2, justification="x") for a in AXES]
+        return Grade(scenario_id=sid, model=model, judge=judge, scores=scores)
+
+    results.append_grade(d, g("s01_leveling_boundary", "claude", "claude"))
+    results.append_grade(d, g("s01_leveling_boundary", "claude", "claude"))  # repeat
+    results.append_grade(d, g("s01_leveling_boundary", "claude", "gpt"))
+
+    counts = results.grade_counts(d)
+    assert counts[("s01_leveling_boundary", "claude", "claude")] == 2
+    assert counts[("s01_leveling_boundary", "claude", "gpt")] == 1
+    assert ("s01_leveling_boundary", "gpt", "claude") not in counts
 
 
 def test_latest_run_dir_picks_most_recent(tmp_path, monkeypatch) -> None:

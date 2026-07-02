@@ -1,25 +1,40 @@
-"""Grader: Claude-as-judge scoring a model response against a scenario.
+"""Grader: LLM-as-judge scoring a model response against a scenario.
 
 The judge is given the scenario, the gold reasoning notes, the named trap, and
-the model's answer, and scores four axes 0-3 each. We force the judge through
-structured outputs (a fixed JSON schema) so every grade is schema-valid and the
-score field can only be 0-3 — this is a deliberate lever for grading
-consistency, which is exactly what M0's judge-variance spike is de-risking.
+the model's answer (but NOT which model produced it — grading is blind to model
+identity), and scores four axes 0-3 each via structured outputs (a fixed JSON
+schema) so every grade is schema-valid and scores can only be 0-3.
 
-The judge prompt is versioned (JUDGE_PROMPT_V1). If variance is too high, iterate
-the prompt under a new version rather than editing V1 in place.
+Two judges are supported behind one interface: `claude` (Anthropic, the default)
+and `gpt` (OpenAI). Using a second, independent judge lets the leaderboard be
+checked for judge agreement — important because one model under test is Claude,
+so a Claude-only judge invites a self-preference objection.
+
+The judge prompt is versioned (JUDGE_PROMPT_V1). If scoring is too noisy or
+biased, iterate under a new version rather than editing V1 in place.
 """
 
 from __future__ import annotations
 
 import json
 
-import anthropic
-
 from comp_evals.models import AXES, AxisScore, Grade, Scenario
+from comp_evals.util import with_retries
 
-JUDGE_MODEL = "claude-opus-4-8"
+# Judges, keyed by a short label stored on each Grade. Both are asked for the
+# same schema; the model_id is the judge doing the scoring.
+JUDGES: dict[str, dict[str, str]] = {
+    "claude": {"provider": "anthropic", "model_id": "claude-opus-4-8"},
+    "gpt": {"provider": "openai", "model_id": "gpt-4o"},
+}
+DEFAULT_JUDGE = "claude"
+ALL_JUDGES = tuple(JUDGES.keys())
+
+# Kept for backward-compatible imports (e.g. reports/CLI headers).
+JUDGE_MODEL = JUDGES[DEFAULT_JUDGE]["model_id"]
 JUDGE_PROMPT_VERSION = "JUDGE_PROMPT_V1"
+
+_MAX_TOKENS = 2000
 
 # Per-axis 0-3 anchors, defined inline so the judge scores against a fixed rubric.
 _AXIS_ANCHORS = {
@@ -51,16 +66,17 @@ JUDGE_PROMPT_V1 = (
     "would produce, the named reasoning trap the scenario is designed to bait, "
     "and a model's answer. Score the answer on four axes, each 0-3, using ONLY "
     "the anchors below. Be calibrated and repeatable: the same answer must always "
-    "earn the same score. Judge the reasoning and conclusion, not the writing style "
-    "beyond what the usability axis covers.\n\n"
+    "earn the same score. You do not know which model wrote the answer; judge the "
+    "reasoning and conclusion, not the writing style beyond what the usability axis "
+    "covers.\n\n"
     "AXES AND ANCHORS:\n"
     + "\n".join(f"- {axis}: {_AXIS_ANCHORS[axis]}" for axis in AXES)
     + "\n\nFor each axis give an integer 0-3 and a one-sentence justification "
     "citing specific evidence from the answer."
 )
 
-# JSON schema for structured outputs. Note: numeric min/max constraints are not
-# supported by structured outputs, so score is constrained via an enum instead.
+# JSON schema for structured outputs (shared by both judges). Numeric min/max
+# constraints aren't supported, so score is constrained via an enum instead.
 _GRADE_SCHEMA = {
     "type": "object",
     "properties": {
@@ -95,20 +111,55 @@ def _build_grading_prompt(scenario: Scenario, response: str) -> str:
     )
 
 
-def grade(scenario: Scenario, response: str, model_under_test: str) -> Grade:
-    """Grade one `response` (produced by `model_under_test`) against `scenario`.
+def _judge_anthropic(system: str, prompt: str, model_id: str) -> dict:
+    import anthropic
 
-    Uses Claude as judge with structured outputs; returns a validated `Grade`.
-    """
     client = anthropic.Anthropic()
     judgement = client.messages.create(
-        model=JUDGE_MODEL,
-        max_tokens=2000,
-        system=JUDGE_PROMPT_V1,
-        messages=[{"role": "user", "content": _build_grading_prompt(scenario, response)}],
+        model=model_id,
+        max_tokens=_MAX_TOKENS,
+        system=system,
+        messages=[{"role": "user", "content": prompt}],
         output_config={"format": {"type": "json_schema", "schema": _GRADE_SCHEMA}},
     )
     text = "".join(block.text for block in judgement.content if block.type == "text")
-    data = json.loads(text)
+    return json.loads(text)
+
+
+def _judge_openai(system: str, prompt: str, model_id: str) -> dict:
+    from openai import OpenAI
+
+    client = OpenAI()
+    judgement = client.chat.completions.create(
+        model=model_id,
+        max_tokens=_MAX_TOKENS,
+        messages=[
+            {"role": "system", "content": system},
+            {"role": "user", "content": prompt},
+        ],
+        response_format={
+            "type": "json_schema",
+            "json_schema": {"name": "grade", "schema": _GRADE_SCHEMA, "strict": True},
+        },
+    )
+    return json.loads(judgement.choices[0].message.content or "{}")
+
+
+_JUDGE_ADAPTERS = {
+    "anthropic": _judge_anthropic,
+    "openai": _judge_openai,
+}
+
+
+def grade(
+    scenario: Scenario, response: str, model_under_test: str, judge: str = DEFAULT_JUDGE
+) -> Grade:
+    """Grade one `response` (from `model_under_test`) against `scenario` using `judge`."""
+    if judge not in JUDGES:
+        raise KeyError(f"unknown judge '{judge}'; known: {', '.join(JUDGES)}")
+    spec = JUDGES[judge]
+    adapter = _JUDGE_ADAPTERS[spec["provider"]]
+    system, prompt = JUDGE_PROMPT_V1, _build_grading_prompt(scenario, response)
+    data = with_retries(lambda: adapter(system, prompt, spec["model_id"]))
     scores = [AxisScore(**s) for s in data["scores"]]
-    return Grade(scenario_id=scenario.id, model=model_under_test, scores=scores)
+    return Grade(scenario_id=scenario.id, model=model_under_test, judge=judge, scores=scores)

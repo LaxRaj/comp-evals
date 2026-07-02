@@ -47,23 +47,50 @@ def _grades_path(d: Path) -> Path:
     return d / "grades.jsonl"
 
 
-def completed_pairs(d: Path) -> set[tuple[str, str]]:
-    """The (scenario_id, model) pairs already graded in this run dir."""
+def _iter_grade_records(d: Path):
     path = _grades_path(d)
     if not path.exists():
-        return set()
-    pairs: set[tuple[str, str]] = set()
+        return
     for line in path.read_text().splitlines():
         line = line.strip()
-        if not line:
-            continue
-        rec = json.loads(line)
-        pairs.add((rec["scenario_id"], rec["model"]))
-    return pairs
+        if line:
+            yield json.loads(line)
+
+
+def completed_pairs(d: Path) -> set[tuple[str, str]]:
+    """The (scenario_id, model) pairs that have at least one grade in this run dir."""
+    return {(rec["scenario_id"], rec["model"]) for rec in _iter_grade_records(d)}
+
+
+def grade_counts(d: Path) -> dict[tuple[str, str, str], int]:
+    """Count of grades per (scenario_id, model, judge) — drives N-times resume.
+
+    Older grades without a `judge` field are attributed to the default 'claude'
+    judge so existing runs remain resumable.
+    """
+    counts: dict[tuple[str, str, str], int] = {}
+    for rec in _iter_grade_records(d):
+        key = (rec["scenario_id"], rec["model"], rec.get("judge", "claude"))
+        counts[key] = counts.get(key, 0) + 1
+    return counts
+
+
+def _raw_path(d: Path, scenario_id: str, model: str) -> Path:
+    return d / "raw" / f"{scenario_id}__{model}.txt"
 
 
 def write_raw(d: Path, scenario_id: str, model: str, text: str) -> None:
-    (d / "raw" / f"{scenario_id}__{model}.txt").write_text(text)
+    _raw_path(d, scenario_id, model).write_text(text)
+
+
+def read_raw(d: Path, scenario_id: str, model: str) -> str | None:
+    """The saved model response for a pair, or None if not yet captured.
+
+    Lets a run reuse one model call across multiple judges and across resumes,
+    instead of re-calling the model to re-grade.
+    """
+    path = _raw_path(d, scenario_id, model)
+    return path.read_text() if path.exists() else None
 
 
 def append_grade(d: Path, grade: Grade) -> None:

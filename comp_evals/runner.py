@@ -8,10 +8,10 @@ place (MODELS) so swapping the model under test for a provider is a one-line edi
 
 from __future__ import annotations
 
-import time
 from typing import Callable
 
 from comp_evals.models import Scenario
+from comp_evals.util import with_retries
 
 # The models under test, keyed by a short label used everywhere (leaderboard,
 # results filenames, Grade.model). Edit the model_id here to change which model
@@ -44,20 +44,6 @@ def _build_prompt(scenario: Scenario) -> str:
         f"## Context\n{scenario.context}\n\n"
         f"## Question\n{scenario.question}"
     )
-
-
-def _with_retries(fn: Callable[[], str]) -> str:
-    """Call `fn` with up to MAX_RETRIES attempts and exponential backoff (1s, 2s, ...)."""
-    last_exc: Exception | None = None
-    for attempt in range(MAX_RETRIES):
-        try:
-            return fn()
-        except Exception as exc:  # noqa: BLE001 - retry any transient API/network error
-            last_exc = exc
-            if attempt < MAX_RETRIES - 1:
-                time.sleep(2**attempt)
-    assert last_exc is not None
-    raise last_exc
 
 
 def _answer_anthropic(system: str, prompt: str, model_id: str, timeout: float) -> str:
@@ -103,4 +89,4 @@ def run_scenario(
     spec = MODELS[model]
     adapter = _ADAPTERS[spec["provider"]]
     system, prompt = _SYSTEM, _build_prompt(scenario)
-    return _with_retries(lambda: adapter(system, prompt, spec["model_id"], timeout))
+    return with_retries(lambda: adapter(system, prompt, spec["model_id"], timeout), attempts=MAX_RETRIES)

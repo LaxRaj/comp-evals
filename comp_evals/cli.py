@@ -12,7 +12,7 @@ from rich.progress import BarColumn, MofNCompleteColumn, Progress, TextColumn, T
 from rich.table import Table
 
 from comp_evals import results
-from comp_evals.grader import JUDGE_MODEL, JUDGE_PROMPT_VERSION, grade
+from comp_evals.grader import ALL_JUDGES, JUDGE_MODEL, JUDGE_PROMPT_VERSION, JUDGES, grade
 from comp_evals.loader import load_all_scenarios, load_scenario
 from comp_evals.models import AXES, Grade
 from comp_evals.report import Report, build_report, render_markdown
@@ -124,22 +124,26 @@ def spike(
         raise typer.Exit(code=1)
 
 
-def _resolve_models(models: str) -> list[str]:
-    """Parse the --models option ('all' or a comma list of known model keys)."""
-    if models.strip().lower() == "all":
-        return list(ALL_MODELS)
-    selected = [m.strip() for m in models.split(",") if m.strip()]
-    unknown = [m for m in selected if m not in MODELS]
+def _resolve_from(value: str, known: dict, all_keys: tuple, label: str) -> list[str]:
+    """Parse an 'all' | comma-list option against a set of known keys."""
+    if value.strip().lower() == "all":
+        return list(all_keys)
+    selected = [x.strip() for x in value.split(",") if x.strip()]
+    unknown = [x for x in selected if x not in known]
     if unknown:
         raise typer.BadParameter(
-            f"unknown model(s): {', '.join(unknown)}. Known: {', '.join(MODELS)} (or 'all')."
+            f"unknown {label}(s): {', '.join(unknown)}. Known: {', '.join(known)} (or 'all')."
         )
     return selected
 
 
 @app.command()
 def run(
-    models: str = typer.Option("all", help="'all' or comma-separated model keys (claude,gpt,gemini)."),
+    models: str = typer.Option("all", help="'all' or comma-separated model keys (claude,gpt)."),
+    judges: str = typer.Option(
+        "all", help="'all' or comma-separated judge keys (claude,gpt). Multiple judges enable agreement checks."
+    ),
+    repeats: int = typer.Option(1, help="Gradings per (scenario, model, judge) — >1 measures grading spread."),
     run_id: str = typer.Option(
         "", help="Resume/continue a specific run id (dir under results/). Blank = new run."
     ),
@@ -148,13 +152,17 @@ def run(
     ),
     timeout: float = typer.Option(120.0, help="Per-model-call timeout in seconds."),
 ) -> None:
-    """Run every scenario against every selected model, grade each response once,
-    and persist grades + raw responses under results/{run_id}/.
+    """Run every scenario against every selected model, grade each response with
+    every selected judge (optionally repeated), and persist grades + raw
+    responses under results/{run_id}/.
 
-    Resumable: scenario-model pairs already graded in the target run dir are
-    skipped, so a killed run continues without re-calling completed pairs.
+    Each model is called once per scenario and the response is reused across
+    judges and repeats. Resumable: (scenario, model, judge) units already graded
+    up to `repeats` are skipped, so a killed run continues without re-calling
+    completed work; a failure for one unit (e.g. a missing key) is isolated.
     """
-    selected = _resolve_models(models)
+    selected_models = _resolve_from(models, MODELS, ALL_MODELS, "model")
+    selected_judges = _resolve_from(judges, JUDGES, ALL_JUDGES, "judge")
     scenarios = load_all_scenarios()
 
     # Decide the target run directory: explicit id > --resume latest > new run.
@@ -166,18 +174,28 @@ def run(
         rid = results.new_run_id()
     run_path = results.ensure_run_dir(rid)
 
-    done = results.completed_pairs(run_path)
-    pending = [
-        (s, m) for s in scenarios for m in selected if (s.id, m) not in done
-    ]
-    total_target = len(scenarios) * len(selected)
+    counts = results.grade_counts(run_path)
+    # Per (scenario, model): how many more gradings each judge still needs.
+    pending: list[tuple] = []  # (scenario, model, {judge: remaining})
+    units_todo = 0
+    for s in scenarios:
+        for m in selected_models:
+            remaining = {j: max(0, repeats - counts.get((s.id, m, j), 0)) for j in selected_judges}
+            if sum(remaining.values()) > 0:
+                pending.append((s, m, remaining))
+                units_todo += sum(remaining.values())
+
+    target_units = len(scenarios) * len(selected_models) * len(selected_judges) * repeats
+    done_units = target_units - units_todo
 
     console.print(
         Panel(
             f"Run: [bold]{rid}[/bold]\n"
-            f"Models: [cyan]{', '.join(selected)}[/cyan] · Scenarios: {len(scenarios)}\n"
-            f"Judge: [magenta]{JUDGE_MODEL}[/magenta] ({JUDGE_PROMPT_VERSION})\n"
-            f"Target grades: {total_target} · already done: {len(done)} · to do: {len(pending)}\n"
+            f"Models: [cyan]{', '.join(selected_models)}[/cyan] · "
+            f"Judges: [magenta]{', '.join(selected_judges)}[/magenta] "
+            f"({JUDGE_PROMPT_VERSION}) · repeats: {repeats}\n"
+            f"Scenarios: {len(scenarios)} · target grades: {target_units} · "
+            f"done: {done_units} · to do: {units_todo}\n"
             f"[dim]{run_path / 'grades.jsonl'}[/dim]",
             title="comp-evals run",
         )
@@ -194,34 +212,47 @@ def run(
         TimeElapsedColumn(),
         console=console,
     ) as progress:
-        task = progress.add_task("grading", total=len(pending))
-        for scenario, model in pending:
+        task = progress.add_task("grading", total=units_todo)
+        for scenario, model, remaining in pending:
             progress.update(task, description=f"{scenario.id} · {model}")
-            try:
-                response = run_scenario(scenario, model=model, timeout=timeout)
-                results.write_raw(run_path, scenario.id, model, response)
-                g = grade(scenario, response, model_under_test=model)
-                results.append_grade(run_path, g)
-            except Exception as exc:  # noqa: BLE001 - isolate one pair's failure
-                failures.append((scenario.id, model, f"{type(exc).__name__}: {exc}"))
-            progress.advance(task)
+            # One model call per (scenario, model), reused across judges/repeats.
+            response = results.read_raw(run_path, scenario.id, model)
+            if response is None:
+                try:
+                    response = run_scenario(scenario, model=model, timeout=timeout)
+                    results.write_raw(run_path, scenario.id, model, response)
+                except Exception as exc:  # noqa: BLE001 - model call failed; skip its judge units
+                    failures.append((scenario.id, model, f"model call — {type(exc).__name__}: {exc}"))
+                    progress.advance(task, sum(remaining.values()))
+                    continue
+            for judge, n in remaining.items():
+                for _ in range(n):
+                    try:
+                        g = grade(scenario, response, model_under_test=model, judge=judge)
+                        results.append_grade(run_path, g)
+                    except Exception as exc:  # noqa: BLE001 - isolate one grading unit
+                        failures.append((scenario.id, f"{model}/{judge}", f"{type(exc).__name__}: {exc}"))
+                    progress.advance(task)
 
-    graded = len(results.completed_pairs(run_path))
+    graded = sum(results.grade_counts(run_path).values())
     console.print(
         Panel(
-            f"Graded [green]{graded}[/green]/{total_target} pairs this run dir.\n"
+            f"Persisted [green]{graded}[/green] grades in this run dir "
+            f"(target {target_units}).\n"
             f"Failures this pass: [red]{len(failures)}[/red]\n"
             f"Results: [bold]{run_path}[/bold]",
             title="run complete",
             border_style="green" if not failures else "yellow",
         )
     )
-    for sid, model, err in failures:
-        console.print(f"  [red]![/red] {sid} · {model} — {err}")
+    for sid, who, err in failures[:20]:
+        console.print(f"  [red]![/red] {sid} · {who} — {err}")
+    if len(failures) > 20:
+        console.print(f"  [dim]… and {len(failures) - 20} more[/dim]")
     if failures:
         console.print(
-            "[dim]Re-run the same command (add --resume or --run-id "
-            f"{rid}) to retry only the failed/pending pairs.[/dim]"
+            "[dim]Re-run the same command with --resume (or --run-id "
+            f"{rid}) to retry only the failed/pending units.[/dim]"
         )
 
 
@@ -240,6 +271,25 @@ def _print_report(rep: Report) -> None:
             *[f"{rep.per_model_axis[m][a]:.2f}" for a in AXES],
         )
     console.print(board)
+    console.print(
+        f"[dim]separation {rep.separation:.2f} pts (top-bottom) · "
+        f"{rep.judge_agreement}[/dim]"
+    )
+
+    if len(rep.judges) >= 2:
+        jb = Table(title="Per-judge leaderboard (mean total, 0-12)")
+        jb.add_column("Judge", style="bold magenta")
+        for m in ranked:
+            jb.add_column(m, justify="right")
+        for j in rep.judges:
+            jb.add_row(
+                j,
+                *[
+                    f"{rep.per_judge_overall[j][m]:.2f}" if m in rep.per_judge_overall[j] else "—"
+                    for m in ranked
+                ],
+            )
+        console.print(jb)
 
     cat = Table(title="Per-category mean total (0-12)")
     cat.add_column("Category", style="bold")
@@ -294,7 +344,7 @@ def report(
     console.print(
         Panel(
             f"Run: [bold]{rep.run_id}[/bold] · {rep.run_date}\n"
-            f"Judge: [magenta]{rep.judge_model}[/magenta] ({rep.judge_prompt_version})\n"
+            f"Judges: [magenta]{', '.join(rep.judges)}[/magenta] ({rep.judge_prompt_version})\n"
             f"Models: {', '.join(rep.models)} · Scenarios: {rep.scenario_count} · "
             f"Grades: {rep.grade_count}\n"
             f"Wrote [green]{out_path}[/green]",

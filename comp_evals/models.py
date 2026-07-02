@@ -55,6 +55,7 @@ class Grade(BaseModel):
 
     scenario_id: str
     model: str
+    judge: str = "claude"  # which judge model produced this grade
     scores: list[AxisScore]
 
     @computed_field  # type: ignore[prop-decorator]
