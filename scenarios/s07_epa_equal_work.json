@@ -1,0 +1,15 @@
+{
+  "id": "s07_epa_equal_work",
+  "title": "Different titles, substantially equal work",
+  "category": "pay-equity",
+  "context": "SYNTHETIC SCENARIO (no real employee data). At a US manufacturer, a woman working as a 'Production Coordinator' and a man working as a 'Operations Specialist' sit in different departments with different job titles and different reporting lines. On paper the roles look distinct. In practice, a review of their actual duties shows they perform substantially the same work: same core responsibilities scheduling and expediting production runs, comparable required skill and effort, similar working conditions, and equivalent responsibility level. The man earns 11% more. Management's position is: 'These are different jobs in different departments with different titles and different job descriptions, so the Equal Pay Act comparison doesn't even apply.' There is no seniority, merit, or productivity system that would explain the difference.",
+  "question": "Does the difference in titles and departments take this outside Equal Pay Act scrutiny, and how should it be evaluated?",
+  "gold_notes": [
+    "The US Equal Pay Act compares JOB CONTENT, not job titles or descriptions: substantially equal work is judged on skill, effort, responsibility, and similar working conditions.",
+    "Different titles, departments, and reporting lines do not exempt roles from comparison if the actual duties are substantially equal — the paperwork does not control.",
+    "Here the actual duties, skill, effort, responsibility, and conditions are comparable, so the roles are likely 'substantially equal' and the EPA framework does apply.",
+    "With no bona fide factor (seniority, merit, quantity/quality of production, or another factor other than sex) explaining the 11% gap, it is a probable EPA exposure requiring correction.",
+    "Correct action: analyze actual job content, remediate the unexplained gap upward, and stop relying on title/department labels to assume roles are non-comparable."
+  ],
+  "trap": "Concluding that different titles, departments, and job descriptions mean the roles aren't comparable and the Equal Pay Act doesn't apply — anchoring on titles instead of the actual job content the EPA measures."
+}

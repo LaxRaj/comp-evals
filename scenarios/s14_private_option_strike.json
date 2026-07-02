@@ -1,0 +1,15 @@
+{
+  "id": "s14_private_option_strike",
+  "title": "What the options are 'worth'",
+  "category": "equity",
+  "context": "SYNTHETIC SCENARIO (no real employee data). A candidate at a private, venture-backed company is granted 20,000 stock options with a strike price (exercise price) of $8.00 per share, set at the current 409A fair-market value of the common stock. The recruiter markets the grant as 'worth $360k' by multiplying 20,000 shares by the company's most recent PREFERRED-round price of $18.00. The candidate, excited, is treating this as $360k of guaranteed compensation. Relevant facts: options require paying the $8 strike to exercise; the $18 is the price investors paid for preferred stock, which carries liquidation preferences and other rights that common stock lacks; there is no liquidity until an acquisition or IPO; future funding rounds will dilute the position; and the company might not exit at all, or could exit below the preferred price.",
+  "question": "What is a sound way to think about the value of this option grant, and why is the recruiter's '$360k' figure misleading?",
+  "gold_notes": [
+    "An option's value is not shares x share price: you must subtract the strike you pay to exercise, so the spread (upside above $8), not the full $18, is what accrues to the holder.",
+    "The $18 preferred price overstates common-stock value: preferred carries liquidation preferences and rights common lacks, so common (what options convert to) is worth less than the preferred price.",
+    "The grant is illiquid and contingent: no value is realized until an exit (IPO/acquisition), and outcomes range from zero to large; it is not guaranteed compensation.",
+    "Dilution from future rounds reduces the ownership percentage, further lowering expected value versus the naive headline.",
+    "A sound estimate risk-adjusts heavily: consider the spread over strike, the common-vs-preferred discount, probability and timing of an exit, and dilution — yielding a value well below $360k, and heavily uncertain."
+  ],
+  "trap": "Valuing the options at 20,000 x $18 preferred price = $360k as if it were guaranteed cash — ignoring the strike price paid to exercise, the preferred-vs-common gap, dilution, and the illiquid, contingent nature of private-company equity."
+}

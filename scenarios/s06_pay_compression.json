@@ -1,0 +1,15 @@
+{
+  "id": "s06_pay_compression",
+  "title": "New hire out-earns the tenured team",
+  "category": "pay-equity",
+  "context": "SYNTHETIC SCENARIO (no real employee data). A rapidly hiring company brings in a new L5 data scientist at a base of $185k because the external market for the skill has risen sharply. Two existing L5 data scientists on the same team, hired three years ago and rated 'strong', earn $158k and $162k after modest annual raises. One of them discovers the new hire's salary and raises it with their manager, upset. HR's initial reaction is: 'The new hire's number reflects current market; the existing folks are paid fairly relative to when they were hired. Nothing to fix.' The team is high-performing and hard to backfill. The company benchmarks to the 50th percentile and the current market midpoint for L5 has moved to roughly $180k.",
+  "question": "Is HR right that there's nothing to fix, and how should the company think about this situation?",
+  "gold_notes": [
+    "This is salary compression: market rates rose, new hires are priced to current market, but tenured employees' pay lagged because raises didn't track the moving midpoint.",
+    "'Paid fairly relative to their hire date' is the wrong frame — internal equity and retention are assessed against the CURRENT market and current peers, not the market at hire time.",
+    "Both tenured L5s are now well below the current L5 midpoint (~$180k) while performing strongly — a real equity and flight risk, not a non-issue.",
+    "Correct action: run a compression/equity adjustment to move the tenured employees toward the current midpoint, and fix the raise process so pay tracks the moving market going forward.",
+    "Quantify the retention cost (backfilling scarce, high performers) against the adjustment cost; doing nothing risks losing them and paying market anyway for replacements."
+  ],
+  "trap": "Accepting 'they were paid fairly for when they were hired, the new hire just reflects market' — dismissing compression as normal market dynamics instead of recognizing lagging tenured pay as an equity and retention problem to remediate."
+}

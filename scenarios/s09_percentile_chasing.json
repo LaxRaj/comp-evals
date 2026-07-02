@@ -1,0 +1,15 @@
+{
+  "id": "s09_percentile_chasing",
+  "title": "Chasing the 90th percentile",
+  "category": "offer-vs-market",
+  "context": "SYNTHETIC SCENARIO (no real employee data). A strong L5 candidate says a survey told them the '90th percentile base salary' for their role is $215k, and they want that base to accept. The company targets the 50th percentile of base salary but positions total compensation (base + bonus + equity) competitively around the 60th-75th percentile. Its L5 base band is $165k-$205k, with a midpoint of $185k; new hires typically land between the minimum and midpoint to leave room for growth. The role carries a 15% target bonus and a meaningful equity grant that the candidate's cited 'base only' survey figure ignores. The candidate is genuinely strong but not an extreme outlier, and internal L5 peers with similar profiles sit near the band midpoint.",
+  "question": "How should the company respond to the demand for a $215k base, and what framework should guide the offer?",
+  "gold_notes": [
+    "A single percentile of base salary is a misleading anchor; compensation should be evaluated on TOTAL target compensation and on where the person sits within the band, not one survey number.",
+    "$215k base exceeds the top of the L5 band ($205k) and would place a non-outlier new hire above internal peers, creating compression and equity problems.",
+    "The candidate's 'base only' comparison ignores bonus and equity; the right move is to compare total comp to total comp and show the competitive full package.",
+    "A reasonable offer places base within band (around or modestly above midpoint given strength) and closes the gap with sign-on, bonus, or equity rather than busting the band on base.",
+    "Anchor the conversation on total comp positioning and internal equity, not on matching a cherry-picked 90th-percentile base figure."
+  ],
+  "trap": "Meeting the candidate's cited '90th percentile base' number by pushing base to $215k — chasing a single base-salary percentile while ignoring total compensation, band structure, and internal equity."
+}

@@ -1,0 +1,15 @@
+{
+  "id": "s02_manager_to_ic",
+  "title": "Manager stepping back to IC",
+  "category": "leveling",
+  "context": "SYNTHETIC SCENARIO (no real employee data). Marcus is an internal transfer request: currently an Engineering Manager (M2) leading a team of nine, he wants to move back to an individual-contributor track because he misses hands-on work. The company runs parallel IC and manager ladders that are explicitly designed to be equivalent at each level (M1=IC5, M2=IC6, M3=IC7) in scope and compensation band, though the day-to-day work differs. Before management Marcus was a strong IC5 (senior) for two years. As a manager he set team roadmap, drove one cross-team technical initiative, and did light coding. HR proposes mapping M2 directly to IC6 (staff) because 'the ladders are equivalent, so his level shouldn't drop.' The IC6/staff bar requires sustained, current technical leadership across teams and deep individual technical depth.",
+  "question": "What IC level should Marcus land at, and what should that decision be based on?",
+  "gold_notes": [
+    "Ladder equivalence (M2=IC6) describes band parity, not an automatic guarantee that a manager's demonstrated IC scope equals the parallel IC level.",
+    "Level on the IC track is set by current, demonstrated individual technical scope and depth — not by the manager level held while doing mostly non-IC work.",
+    "Marcus's most recent sustained IC evidence is IC5; as a manager he did light coding, so IC6/staff-level current technical leadership is not clearly demonstrated.",
+    "Reasonable placement is IC5 (possibly IC5 at top of band or a defined ramp to IC6), assessed on a fresh read of technical scope, not a mechanical M2->IC6 mapping.",
+    "Guard against both over-leveling (mechanical mapping) and unfairly penalizing his management stint; weigh transferable technical-leadership evidence honestly."
+  ],
+  "trap": "Mechanically mapping M2 to IC6 because the ladders are 'equivalent', treating band parity as proof of equivalent demonstrated IC scope rather than re-assessing his current individual technical level."
+}

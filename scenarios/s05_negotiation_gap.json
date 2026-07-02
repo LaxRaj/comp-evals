@@ -1,0 +1,15 @@
+{
+  "id": "s05_negotiation_gap",
+  "title": "The gap explained by 'negotiation'",
+  "category": "pay-equity",
+  "context": "SYNTHETIC SCENARIO (no real employee data). A pay-equity review at a US company finds two software engineers, both at L4 with similar tenure, performance ratings, and job scope on the same team. Engineer A (a man) earns 14% more in base salary than Engineer B (a woman). When the manager is asked about it, he explains: 'A negotiated harder at offer stage and had a higher previous salary, so his starting number was higher; B accepted our first offer. It's just how negotiation played out.' The company is in a state that has banned asking for salary history. Annual raises are percentage-based, so the initial gap has compounded over three years. There is no documented difference in role, responsibility, or measured performance between them.",
+  "question": "Is 'they negotiated differently' an adequate justification for the pay gap here, and what should the company do?",
+  "gold_notes": [
+    "For substantially equal work, unequal pay must be explained by a bona fide factor other than sex (seniority, merit, quantity/quality of output) — negotiation skill and prior salary are not among the protected bona fide factors and can perpetuate bias.",
+    "Basing the offer partly on prior salary can import historical market discrimination and, in salary-history-ban jurisdictions, is legally problematic.",
+    "Percentage raises compound the original gap, so an unjustified starting difference grows over time — the gap is not self-correcting.",
+    "Correct action: treat this as a likely inequity, adjust B's pay up to remove the unexplained gap (do not lower A), and fix the offer process to stop pricing on prior salary/negotiation.",
+    "Document the analysis and check for a pattern rather than treating it as a one-off; 'negotiation' as a blanket explanation is a red flag, not a defense."
+  ],
+  "trap": "Accepting 'he negotiated harder / had a higher prior salary' as a legitimate business reason for the gap — treating negotiation and salary history as valid factors rather than recognizing them as vectors for perpetuating pay inequity."
+}

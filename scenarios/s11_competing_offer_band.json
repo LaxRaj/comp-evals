@@ -1,0 +1,15 @@
+{
+  "id": "s11_competing_offer_band",
+  "title": "The competing offer above band",
+  "category": "offer-vs-market",
+  "context": "SYNTHETIC SCENARIO (no real employee data). A finalist for an L6 role reveals a written competing offer with a base of $260k. The company's L6 base band tops out at $240k, with a midpoint of $215k; the role also carries a 20% bonus and a substantial equity grant. Internal L6 peers, including several strong performers, sit between $210k and $235k in base. The hiring manager, worried about losing the candidate, wants to simply match the $260k base to win. Doing so would place the new hire above the entire existing L6 population on base and $20k over the band ceiling. The candidate is good but comparable in profile to current L6s. The company has flexibility in sign-on bonus and equity, and its total-comp package is competitive when all components are counted.",
+  "question": "Should the company match the $260k base to win the candidate, and what is the sounder approach?",
+  "gold_notes": [
+    "Compensation decisions should protect band structure and internal equity; a $260k base blows past the $240k ceiling and tops every existing L6 for a non-outlier profile.",
+    "Compare total comp to total comp: the competing base should be weighed against the company's full package (base + 20% bonus + equity), which may already be close or superior.",
+    "Better levers than busting the band: a sign-on bonus, a larger equity grant, or base near the top of band — these close the gap without permanently distorting the structure.",
+    "Matching base above band creates lasting compression, invites peer parity claims, and resets expectations; the short-term win can cause durable internal-equity damage.",
+    "Be willing to walk away or lose the candidate rather than break the band for a comparable profile; not every competing offer should be matched dollar-for-dollar on base."
+  ],
+  "trap": "Matching the $260k competing base to win the candidate — busting the band ceiling and topping all internal peers, rather than comparing total comp and closing the gap with sign-on or equity."
+}

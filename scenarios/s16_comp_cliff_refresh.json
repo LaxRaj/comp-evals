@@ -1,0 +1,15 @@
+{
+  "id": "s16_comp_cliff_refresh",
+  "title": "The year-four equity cliff",
+  "category": "equity",
+  "context": "SYNTHETIC SCENARIO (no real employee data). A public-company employee joined with a new-hire RSU grant of $400k vesting evenly over 4 years ($100k/year). At the start of years 2 and 3, they also received annual 'refresh' grants of $120k each, each vesting evenly over its own 4 years ($30k/year). The employee is projecting their equity income and reasons: 'My grants total $400k + $120k + $120k = $640k of equity, so I'm effectively earning about $160k/year in stock, and that will hold steady.' They are using this to justify a large mortgage. In reality the new-hire grant fully vests at the end of year 4 and then stops contributing, while the refreshers are smaller — so once the initial grant runs out, annual equity income drops sharply unless new refreshers keep backfilling it.",
+  "question": "Is the employee's '$160k/year in equity, holding steady' projection sound, and how should they model their equity income?",
+  "gold_notes": [
+    "Equity income is the sum of what VESTS each year from all active grants, not the total grant value divided evenly — grants overlap and expire at different times.",
+    "Year-by-year vesting: the new-hire grant contributes $100k/year in years 1-4 then stops; refreshers add $30k/year each over their own 4 years starting years 2 and 3.",
+    "Peak years stack multiple grants (e.g. years 2-4 include the $100k new-hire vest plus refreshers), but after year 4 the large new-hire grant falls off, causing a sharp drop — the 'equity cliff' / year-4 trough.",
+    "Steady $160k/year is wrong: income is front-loaded by the new-hire grant and declines once it fully vests unless future refreshers grow enough to backfill the gap.",
+    "Sound modeling builds a per-year vesting schedule across all grants, shows the post-year-4 cliff explicitly, and does not assume refreshers will automatically maintain the peak — basing a large mortgage on the peak is risky."
+  ],
+  "trap": "Averaging total grant value into a flat '$160k/year that holds steady' — ignoring that overlapping grants vest and expire on different schedules, so equity income is front-loaded and drops at the year-4 cliff when the new-hire grant runs out."
+}

@@ -1,0 +1,15 @@
+{
+  "id": "s13_vesting_cliff_math",
+  "title": "The one-year cliff and 18-month math",
+  "category": "equity",
+  "context": "SYNTHETIC SCENARIO (no real employee data). An employee receives an RSU grant of 48,000 units on a standard 4-year vesting schedule with a 1-year cliff, then monthly vesting thereafter. The schedule: nothing vests before the 1-year cliff; at the 12-month mark, 25% (12,000 units) vests all at once; the remaining 36,000 units then vest in equal monthly installments over the following 36 months (1,000 units per month). The employee is planning to leave at the 18-month mark and asks how many units they will have vested by then, assuming they depart the day after their 18-month vesting event. A colleague tells them 'it's 4 years for 48,000, so at 18 months you've got about 18/48 of it, roughly 18,000 units.'",
+  "question": "How many units will actually have vested at the 18-month mark, and where does the colleague's estimate go wrong?",
+  "gold_notes": [
+    "Vesting is not linear from day one: the 1-year cliff means zero vests for the first 12 months, then 25% (12,000 units) vests at once at month 12.",
+    "After the cliff, 36,000 units vest monthly at 1,000/month; from month 12 to month 18 is 6 monthly vesting events, so 6,000 additional units vest.",
+    "Total vested at 18 months = 12,000 (cliff) + 6,000 (6 months x 1,000) = 18,000 units.",
+    "The colleague reaches ~18,000 by coincidence using a wrong linear method (18/48 of grant); the number matches here but the reasoning is invalid and would be wrong at most other dates (e.g. month 6 = 0, not 6,000).",
+    "The correct approach models the cliff plus monthly schedule explicitly rather than prorating the total linearly across 48 months."
+  ],
+  "trap": "Computing vested units by linearly prorating the 4-year grant (18/48 -> ~18,000), ignoring that the 1-year cliff front-loads 25% at month 12 and nothing vests before it — a method that happens to hit the right number here but is fundamentally wrong."
+}

@@ -1,0 +1,15 @@
+{
+  "id": "s10_geo_differential",
+  "title": "The remote hire and the geo cut",
+  "category": "offer-vs-market",
+  "context": "SYNTHETIC SCENARIO (no real employee data). A company headquartered in San Francisco is hiring a fully remote senior ML engineer who lives in a lower-cost metro. The company applies location-based pay with a standard geo differential: for this candidate's metro, the policy factor is a 20% reduction off the SF band. A recruiter mechanically applies the 20% cut, producing an offer the candidate rejects as well below what they're seeing elsewhere. The complication: senior ML engineering is a scarce, largely NATIONAL talent market where top candidates command similar numbers regardless of city, and competitors are hiring remote ML talent without steep geo cuts. The company's own data shows it has lost three of its last four remote ML candidates on compensation. The role is a high priority and hard to fill.",
+  "question": "Should the company apply the standard 20% geo cut here, and how should it reason about location-based pay for this role?",
+  "gold_notes": [
+    "Geo differentials assume the relevant labor market is local; for scarce, highly mobile skills the market is often national, so a mechanical local cut misprices the role.",
+    "Evidence that competitors pay remote ML talent without steep cuts, plus a 3-of-4 loss rate, signals the geo policy is out of step with the actual talent market for this skill.",
+    "The decision should weigh consistency of the geo policy against competitiveness for a scarce national-market role — not just apply the factor by rote.",
+    "A defensible approach: reduce or waive the geo cut for this national-market skill (or benchmark to the national market with a smaller adjustment), while keeping the policy for genuinely local-market roles.",
+    "Consider precedent and internal equity when making an exception, but recognize that rigidly applying a local differential to a national market is what's causing the losses."
+  ],
+  "trap": "Mechanically applying the standard 20% location cut because 'that's the geo policy' — ignoring that senior ML is a national talent market where the local differential misprices the role and is losing candidates."
+}

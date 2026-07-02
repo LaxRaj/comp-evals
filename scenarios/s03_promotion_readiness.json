@@ -1,0 +1,15 @@
+{
+  "id": "s03_promotion_readiness",
+  "title": "Tenure vs. readiness for promotion",
+  "category": "leveling",
+  "context": "SYNTHETIC SCENARIO (no real employee data). Dana has been a Senior Analyst (L4) for three and a half years, longer than anyone else at her level on the team. Her manager is advocating for promotion to Lead Analyst (L5), citing that she is 'overdue' and that peers promoted after only two years. Dana's performance reviews are consistently 'meets expectations' with occasional 'exceeds' on delivery. The L5 rubric requires ambiguous-problem ownership, mentoring, and influence on team direction. Dana reliably executes well-scoped work but has not yet independently scoped an ambiguous initiative or shaped team priorities; her manager acknowledges this but worries about retention if she is passed over again. Comp bands for L4 and L5 overlap slightly, so Dana is already near the top of the L4 band.",
+  "question": "Should Dana be promoted to L5 now, and what should the decision hinge on?",
+  "gold_notes": [
+    "Promotion is earned by demonstrating the NEXT level's scope already, not by time served at the current level; 'overdue' and peer timing are not evidence of readiness.",
+    "Map Dana's demonstrated behavior to the L5 rubric: she executes well-scoped work but has not shown ambiguous-problem ownership or influence on direction — the L5 differentiators.",
+    "Correct call is not yet: hold at L4 with a concrete, time-bound development plan targeting the specific missing L5 behaviors (scope an ambiguous initiative, mentor, shape priorities).",
+    "Address retention risk directly (top-of-band comp, growth opportunities, honest path) rather than by promoting into a level she hasn't demonstrated, which sets her up to struggle.",
+    "Distinguish 'strong at current level' from 'operating at next level' — a very good L4 is still an L4 until L5 scope is evidenced."
+  ],
+  "trap": "Promoting Dana because she has spent the most time at L4 and peers were promoted sooner — using tenure and fairness-of-timing as the basis instead of demonstrated next-level scope."
+}

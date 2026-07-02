@@ -1,0 +1,15 @@
+{
+  "id": "s08_legitimate_factor",
+  "title": "A gap with a bona fide explanation",
+  "category": "pay-equity",
+  "context": "SYNTHETIC SCENARIO (no real employee data). An automated pay-equity flag surfaces that, among Level-4 nurses at a hospital, men earn on average 9% more than women. A closer look shows the difference is almost entirely driven by a documented, consistently applied night-shift differential (a fixed +12% for the overnight shift) and a certification premium (a fixed +$4/hour for a specialty certification), both codified in policy and available to all staff regardless of sex. A higher proportion of the men in this group happen to work nights and hold the certification. When these two factors are controlled for, the residual pay difference between comparable men and women is statistically negligible. An executive, alarmed by the 9% headline, wants to immediately raise all the women's base pay to erase the gap.",
+  "question": "Should the company raise the women's base pay to close the 9% gap, and how should this be handled?",
+  "gold_notes": [
+    "A raw average gap is not itself proof of discrimination; the correct analysis controls for legitimate, consistently applied, sex-neutral factors before concluding anything.",
+    "Shift differentials and codified certification premiums available to everyone regardless of sex are classic bona fide 'factors other than sex' that can lawfully explain pay differences.",
+    "Here the gap is explained by those factors and the residual is negligible, so a blanket base-pay raise for women would over-correct and could itself create a new inequity.",
+    "Correct action: document the controlled analysis, verify the factors are genuinely applied consistently and that access to nights/certification isn't itself gated by bias, and address any real barriers to access rather than the base pay.",
+    "The right response to a headline gap is to decompose it, not to reflexively adjust — over-correction is as much an error as ignoring a real gap."
+  ],
+  "trap": "Reflexively raising the women's base pay to erase the 9% headline gap, assuming any average difference must be discriminatory — over-correcting instead of first decomposing the gap into legitimate, sex-neutral factors."
+}

@@ -1,0 +1,15 @@
+{
+  "id": "s15_double_trigger_rsu",
+  "title": "Vested but not liquid: double-trigger RSUs",
+  "category": "equity",
+  "context": "SYNTHETIC SCENARIO (no real employee data). An employee at a late-stage private company holds RSUs with a double-trigger vesting structure, common at pre-IPO companies. Both conditions must be met before shares are actually delivered and taxable: (1) a time-based service condition (the usual 4-year schedule), and (2) a liquidity event (an IPO or acquisition). The employee has passed the 1-year cliff and is 'time-vested' on 2 years' worth of units, and is doing personal budgeting that counts those units as available income they can spend or borrow against this year. No liquidity event has occurred or been announced. They ask whether they can treat the time-vested portion as realizable compensation now, and how to think about it for both cash-flow and tax planning.",
+  "question": "Can the employee treat the time-vested double-trigger RSUs as available income now, and how should they reason about them?",
+  "gold_notes": [
+    "Double-trigger RSUs require BOTH the service condition and a liquidity event; meeting only the time-based trigger does not deliver shares or create spendable value.",
+    "Because the liquidity trigger has not occurred, the units are not yet delivered, not liquid, and not realizable — they cannot be spent or reliably borrowed against as income now.",
+    "Taxation is also deferred: no ordinary income is recognized until the shares are delivered (both triggers met), which typically happens at/after the liquidity event — so there is no current tax event either.",
+    "The right planning stance is to exclude these units from current cash flow, and to prepare for a concentrated income-and-tax event WHEN a liquidity event occurs (often with vesting acceleration and a large tax bill in one year).",
+    "Distinguish 'time-vested' from 'realizable': under double-trigger, time-vesting alone is a necessary-but-not-sufficient condition; value is contingent on an exit that may not happen or may be delayed."
+  ],
+  "trap": "Treating the time-vested double-trigger RSUs as available income now because they are 'vested' — conflating the service condition with actual delivery, and ignoring that no value (or tax event) is realized until the required liquidity event occurs."
+}

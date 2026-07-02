@@ -1,0 +1,15 @@
+{
+  "id": "s12_total_comp_normalization",
+  "title": "Comparing two offers on headline numbers",
+  "category": "offer-vs-market",
+  "context": "SYNTHETIC SCENARIO (no real employee data). A candidate is comparing the company's offer against a competitor's and says the competitor 'is offering way more.' Company offer: $190k base, 15% target bonus, and public-company RSUs worth $160k at grant, vesting evenly over 4 years (~$40k/year). Competitor offer: $200k base and a private startup's stock options for '40,000 shares' that the recruiter described as 'worth $400k.' That $400k figure is the number of options times the company's last preferred-round price per share; it ignores the option strike price, the 4-year vest with a 1-year cliff, dilution, illiquidity until an exit, and the difference between preferred and common share value. The candidate is treating both equity figures as directly comparable cash.",
+  "question": "How should the candidate compare these two offers, and what is wrong with the headline comparison?",
+  "gold_notes": [
+    "Offers must be normalized to comparable annualized total comp; headline base plus a raw equity number is not an apples-to-apples comparison.",
+    "The startup's '$400k' is options x last preferred price and overstates value: it ignores the strike price (you pay to exercise), common-vs-preferred discount, dilution, vesting/cliff, and illiquidity until a liquidity event.",
+    "Public-company RSUs vesting ~$40k/year are liquid and (near) certain in value; startup options are contingent, illiquid, and risk-adjusted far below the quoted figure.",
+    "A sound comparison annualizes each package, risk-adjusts the private equity heavily, and accounts for base and bonus — often narrowing or reversing the 'way more' impression.",
+    "Advise the candidate to get the strike price, current 409A/common value, share count/dilution, and vesting terms before treating the options as $400k of comp."
+  ],
+  "trap": "Taking the competitor's '$400k in options' at face value as directly comparable to RSUs and cash — comparing headline numbers without normalizing for strike price, vesting, dilution, illiquidity, and preferred-vs-common value."
+}

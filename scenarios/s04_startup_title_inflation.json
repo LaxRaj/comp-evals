@@ -1,0 +1,15 @@
+{
+  "id": "s04_startup_title_inflation",
+  "title": "The startup 'Head of' title",
+  "category": "leveling",
+  "context": "SYNTHETIC SCENARIO (no real employee data). Sofia is interviewing at a 2,000-person enterprise company for a product management role. Her current title is 'Head of Product' at an 11-person seed-stage startup, where she is the only PM: she owns the entire (single) product, sets its roadmap, talks to customers, and reports to the CEO. The enterprise uses a leveling ladder where 'Head of Product' would imply a director-level (L7) role managing multiple PMs and product lines. In interviews Sofia showed excellent product instincts and end-to-end ownership of one product, but has never managed other PMs, operated within a large organization's constraints, or handled multi-product portfolio tradeoffs. The hiring manager is torn between honoring her title at L7 and 'down-leveling' her to a senior IC PM level (L5).",
+  "question": "At what level should Sofia be placed, and what is the core principle driving that placement?",
+  "gold_notes": [
+    "Startup titles are calibrated to a different (often much smaller) scope; 'Head of Product' at 11 people is not equivalent to a director role managing multiple PMs and product lines.",
+    "Level should reflect demonstrated scope translated into THIS company's ladder: broad ownership of one product with no people-management maps to a strong senior IC PM level, not director.",
+    "Her breadth (owning everything at a startup) is real and valuable but reflects small-company generalism, not the org-scale and portfolio scope the L7 rubric requires.",
+    "Reasonable placement is a senior IC PM level (e.g. L5, possibly high in band given strong ownership), framed as scope-based rather than a demotion — with a growth path.",
+    "Avoid the mirror error too: don't dismiss her genuine end-to-end ownership; scope-based leveling cuts against both title inflation and unfair discounting of startup breadth."
+  ],
+  "trap": "Honoring the impressive 'Head of Product' title at director level (L7) — treating a startup title as portable evidence of large-org scope instead of scoring her demonstrated scope against this company's rubric."
+}
