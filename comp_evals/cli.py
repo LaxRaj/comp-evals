@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from pathlib import Path
+
 import typer
 from dotenv import load_dotenv
 from rich.console import Console
@@ -13,6 +15,7 @@ from comp_evals import results
 from comp_evals.grader import JUDGE_MODEL, JUDGE_PROMPT_VERSION, grade
 from comp_evals.loader import load_all_scenarios, load_scenario
 from comp_evals.models import AXES, Grade
+from comp_evals.report import Report, build_report, render_markdown
 from comp_evals.runner import ALL_MODELS, DEFAULT_MODEL, MODELS, run_scenario
 
 app = typer.Typer(help="Eval harness scoring frontier models on comp-reasoning scenarios.")
@@ -220,6 +223,85 @@ def run(
             "[dim]Re-run the same command (add --resume or --run-id "
             f"{rid}) to retry only the failed/pending pairs.[/dim]"
         )
+
+
+def _print_report(rep: Report) -> None:
+    ranked = sorted(rep.models, key=lambda m: rep.per_model_overall[m], reverse=True)
+
+    board = Table(title="Leaderboard (mean total, 0-12)")
+    board.add_column("#", justify="right")
+    board.add_column("Model", style="bold cyan")
+    board.add_column("Total", justify="right", style="bold")
+    for axis in AXES:
+        board.add_column(axis[:4], justify="right")
+    for i, m in enumerate(ranked, 1):
+        board.add_row(
+            str(i), m, f"{rep.per_model_overall[m]:.2f}",
+            *[f"{rep.per_model_axis[m][a]:.2f}" for a in AXES],
+        )
+    console.print(board)
+
+    cat = Table(title="Per-category mean total (0-12)")
+    cat.add_column("Category", style="bold")
+    for m in ranked:
+        cat.add_column(m, justify="right")
+    for c in rep.categories:
+        cat.add_row(
+            c,
+            *[
+                f"{rep.per_model_category[m][c]:.2f}" if c in rep.per_model_category[m] else "—"
+                for m in ranked
+            ],
+        )
+    console.print(cat)
+
+    console.print("\n[bold]Most-failed traps[/bold] (lowest cross-model scores):")
+    for ft in rep.failed_traps:
+        console.print(
+            f"  [yellow]•[/yellow] [bold]{ft.scenario.id}[/bold] "
+            f"({ft.scenario.category}) — mean {ft.cross_model_mean:.2f}/12, "
+            f"worst [cyan]{ft.worst_model}[/cyan] {ft.worst_total}/12"
+        )
+
+
+@app.command()
+def report(
+    run: str = typer.Option("latest", help="Run id to report on, or 'latest'."),
+    output: Path = typer.Option(
+        None, help="Markdown output path (default: RESULTS.md at the repo root)."
+    ),
+) -> None:
+    """Aggregate a run's grades into RESULTS.md (per-model, per-axis, per-category,
+    and the most-failed traps) and print a leaderboard to the terminal."""
+    if run == "latest":
+        run_path = results.latest_run_dir()
+        if run_path is None:
+            raise typer.BadParameter("no runs found under results/ — do `comp-evals run` first.")
+    else:
+        run_path = results.run_dir(run)
+        if not run_path.exists():
+            raise typer.BadParameter(f"run '{run}' not found under results/.")
+
+    rep = build_report(run_path)
+    if not rep.models:
+        console.print("[red]No grades in this run — nothing to report.[/red]")
+        raise typer.Exit(code=1)
+
+    md = render_markdown(rep)
+    out_path = output or (results.RESULTS_ROOT.parent / "RESULTS.md")
+    out_path.write_text(md)
+
+    console.print(
+        Panel(
+            f"Run: [bold]{rep.run_id}[/bold] · {rep.run_date}\n"
+            f"Judge: [magenta]{rep.judge_model}[/magenta] ({rep.judge_prompt_version})\n"
+            f"Models: {', '.join(rep.models)} · Scenarios: {rep.scenario_count} · "
+            f"Grades: {rep.grade_count}\n"
+            f"Wrote [green]{out_path}[/green]",
+            title="comp-evals report",
+        )
+    )
+    _print_report(rep)
 
 
 if __name__ == "__main__":
