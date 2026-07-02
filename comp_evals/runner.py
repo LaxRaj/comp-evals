@@ -1,19 +1,31 @@
 """Runner: send a scenario to one model and capture its answer text.
 
-M0 supports Claude only (the model under test answers the same way a human
-would be asked to). M2 will add GPT and Gemini adapters behind this interface.
+One interface, `run_scenario(scenario, model)`, dispatches to a provider adapter
+(Anthropic / OpenAI / Google) selected from the MODELS registry. Each call has a
+per-call timeout and retries with exponential backoff. Model ids live in one
+place (MODELS) so swapping the model under test for a provider is a one-line edit.
 """
 
 from __future__ import annotations
 
-import anthropic
+import time
+from typing import Callable
 
 from comp_evals.models import Scenario
 
-DEFAULT_MODEL = "claude-sonnet-4-6"
+# The models under test, keyed by a short label used everywhere (leaderboard,
+# results filenames, Grade.model). Edit the model_id here to change which model
+# represents a provider. These ids are current, capable defaults; adjust freely.
+MODELS: dict[str, dict[str, str]] = {
+    "claude": {"provider": "anthropic", "model_id": "claude-sonnet-4-6"},
+    "gpt": {"provider": "openai", "model_id": "gpt-4o"},
+    "gemini": {"provider": "google", "model_id": "gemini-2.5-pro"},
+}
+DEFAULT_MODEL = "claude"
+ALL_MODELS = tuple(MODELS.keys())
 
-# Max output tokens for a scenario answer. Comfortably under the SDK's
-# non-streaming HTTP-timeout ceiling; a reasoning answer is a few paragraphs.
+DEFAULT_TIMEOUT = 120.0  # seconds per model call
+MAX_RETRIES = 3  # total attempts per call
 _MAX_TOKENS = 4000
 
 _SYSTEM = (
@@ -35,13 +47,78 @@ def _build_prompt(scenario: Scenario) -> str:
     )
 
 
-def run_scenario(scenario: Scenario, model: str = DEFAULT_MODEL) -> str:
-    """Ask `model` the scenario's question and return its answer as plain text."""
-    client = anthropic.Anthropic()
+def _with_retries(fn: Callable[[], str]) -> str:
+    """Call `fn` with up to MAX_RETRIES attempts and exponential backoff (1s, 2s, ...)."""
+    last_exc: Exception | None = None
+    for attempt in range(MAX_RETRIES):
+        try:
+            return fn()
+        except Exception as exc:  # noqa: BLE001 - retry any transient API/network error
+            last_exc = exc
+            if attempt < MAX_RETRIES - 1:
+                time.sleep(2**attempt)
+    assert last_exc is not None
+    raise last_exc
+
+
+def _answer_anthropic(system: str, prompt: str, model_id: str, timeout: float) -> str:
+    import anthropic
+
+    client = anthropic.Anthropic(timeout=timeout)
     response = client.messages.create(
-        model=model,
+        model=model_id,
         max_tokens=_MAX_TOKENS,
-        system=_SYSTEM,
-        messages=[{"role": "user", "content": _build_prompt(scenario)}],
+        system=system,
+        messages=[{"role": "user", "content": prompt}],
     )
     return "".join(block.text for block in response.content if block.type == "text")
+
+
+def _answer_openai(system: str, prompt: str, model_id: str, timeout: float) -> str:
+    from openai import OpenAI
+
+    client = OpenAI(timeout=timeout)
+    response = client.chat.completions.create(
+        model=model_id,
+        max_tokens=_MAX_TOKENS,
+        messages=[
+            {"role": "system", "content": system},
+            {"role": "user", "content": prompt},
+        ],
+    )
+    return response.choices[0].message.content or ""
+
+
+def _answer_google(system: str, prompt: str, model_id: str, timeout: float) -> str:
+    from google import genai
+    from google.genai import types
+
+    client = genai.Client(http_options=types.HttpOptions(timeout=int(timeout * 1000)))
+    response = client.models.generate_content(
+        model=model_id,
+        contents=prompt,
+        config=types.GenerateContentConfig(
+            system_instruction=system,
+            max_output_tokens=_MAX_TOKENS,
+        ),
+    )
+    return response.text or ""
+
+
+_ADAPTERS: dict[str, Callable[[str, str, str, float], str]] = {
+    "anthropic": _answer_anthropic,
+    "openai": _answer_openai,
+    "google": _answer_google,
+}
+
+
+def run_scenario(
+    scenario: Scenario, model: str = DEFAULT_MODEL, timeout: float = DEFAULT_TIMEOUT
+) -> str:
+    """Ask `model` (a MODELS key) the scenario's question and return its answer text."""
+    if model not in MODELS:
+        raise KeyError(f"unknown model '{model}'; known: {', '.join(MODELS)}")
+    spec = MODELS[model]
+    adapter = _ADAPTERS[spec["provider"]]
+    system, prompt = _SYSTEM, _build_prompt(scenario)
+    return _with_retries(lambda: adapter(system, prompt, spec["model_id"], timeout))
