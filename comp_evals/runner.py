@@ -19,7 +19,6 @@ from comp_evals.models import Scenario
 MODELS: dict[str, dict[str, str]] = {
     "claude": {"provider": "anthropic", "model_id": "claude-sonnet-4-6"},
     "gpt": {"provider": "openai", "model_id": "gpt-4o"},
-    "gemini": {"provider": "google", "model_id": "gemini-2.5-pro"},
 }
 DEFAULT_MODEL = "claude"
 ALL_MODELS = tuple(MODELS.keys())
@@ -89,26 +88,9 @@ def _answer_openai(system: str, prompt: str, model_id: str, timeout: float) -> s
     return response.choices[0].message.content or ""
 
 
-def _answer_google(system: str, prompt: str, model_id: str, timeout: float) -> str:
-    from google import genai
-    from google.genai import types
-
-    client = genai.Client(http_options=types.HttpOptions(timeout=int(timeout * 1000)))
-    response = client.models.generate_content(
-        model=model_id,
-        contents=prompt,
-        config=types.GenerateContentConfig(
-            system_instruction=system,
-            max_output_tokens=_MAX_TOKENS,
-        ),
-    )
-    return response.text or ""
-
-
 _ADAPTERS: dict[str, Callable[[str, str, str, float], str]] = {
     "anthropic": _answer_anthropic,
     "openai": _answer_openai,
-    "google": _answer_google,
 }
 
 

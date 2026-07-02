@@ -4,7 +4,7 @@
 
 - **Success metric:** Public repo + results table live; LinkedIn post published tagging Charlie Franklin; DM sent to Joseph Malandruccolo with link.
 - **Deadline:** ASAP/ 1 Day from Now.
-- **Status:** M0 — not started
+- **Status:** M4 — shipping (M0-M3 done; Gemini dropped, 2-model eval: claude + gpt)
 - **Repo:** ~/projects/comp-evals (public GitHub on ship)
 
 ## Non-goals
@@ -26,7 +26,7 @@
 
 ## Milestones
 
-### [ ] M0 — Walking skeleton + judge-consistency spike
+### [x] M0 — Walking skeleton + judge-consistency spike
 - **Deliverable:** Repo scaffolded; ONE scenario runs end-to-end (Claude answers → Claude judges → score prints); judge variance measured across 3 repeated gradings.
 - **Prompt:**
   ```
@@ -53,7 +53,7 @@
   - [ ] `.env` pattern works; no key in repo
 - **Verify:** `uv run comp-evals spike`
 
-### [ ] M1 — Scenario set (the actual product)
+### [x] M1 — Scenario set (the actual product)
 - **Deliverable:** 16 scenarios across 4 categories: leveling decisions (4), pay-equity edge cases (4), offer-vs-market judgment (4), equity/stock reasoning (4). Each has gold_notes written from public comp-practice sources and a named trap.
 - **Prompt:**
   ```
@@ -74,7 +74,7 @@
   - [ ] Manual read of all 16: each trap is one a smart non-expert would plausibly fall into (Laksh reviews — do not skip)
 - **Verify:** `uv run pytest tests/test_scenarios.py -v`
 
-### [ ] M2 — Multi-model runner + full grading pass
+### [x] M2 — Multi-model runner + full grading pass
 - **Deliverable:** All 16 scenarios run against Claude, GPT, and Gemini; grades persisted to results/ as JSON.
 - **Prompt:**
   ```
@@ -91,7 +91,7 @@
   - [ ] A killed run resumes without re-calling completed pairs
 - **Verify:** `uv run comp-evals run --models all && ls results/*/grades.jsonl`
 
-### [ ] M3 — Leaderboard report
+### [x] M3 — Leaderboard report
 - **Deliverable:** `comp-evals report` produces RESULTS.md: per-model totals, per-axis breakdown, per-category breakdown, and the 3 most-failed traps with example excerpts.
 - **Prompt:**
   ```
@@ -117,3 +117,7 @@
 
 ## Decision log
 <!-- Append-only. Format: date — decision — why -->
+- 2026-07-02 — Judge = `claude-opus-4-8` with structured outputs (fixed 0-3 JSON schema), separate from the runner default. — Structured outputs constrain the judge to schema-valid, 0-3 scores; M0's variance spike passed with 0 per-axis variance on s01.
+- 2026-07-02 — Runner default kept as `claude-sonnet-4-6`. — It is a real, active model, so the spec's id needed no change.
+- 2026-07-02 — Dropped Gemini; shipping a 2-model eval (`claude`, `gpt`). — Owner decision; removed the `google-genai` dependency and the Google adapter so the quickstart needs only two keys. The runner registry still makes adding a model a one-line change.
+- 2026-07-02 — Honest finding: strong models cluster near the ceiling (claude 11.94, gpt 11.75 / 12); spread is concentrated in the harder scenarios (e.g. s13 vesting math). — Documented as a limitation (small n) and a future lever (harder scenarios / stricter rubric).
