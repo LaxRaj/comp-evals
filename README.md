@@ -10,7 +10,7 @@ See [`RESULTS.md`](./RESULTS.md) for the latest leaderboard.
 
 ## What this is (and isn't)
 
-- **Is:** 16 hand-written, expert-plausible comp-reasoning scenarios, each with a documented "trap" — a plausible-but-wrong path a smart non-expert would take (title-anchoring, percentile-chasing, ignoring geo differentials, vesting-schedule math errors, and so on). Models answer unaided; a judge scores each answer against gold reasoning notes.
+- **Is:** 24 hand-written, expert-plausible comp-reasoning scenarios, each with a documented "trap" — a plausible-but-wrong path a smart non-expert would take (title-anchoring, percentile-chasing, ignoring geo differentials, vesting-schedule math errors, and so on). Models answer unaided; a judge scores each answer against gold reasoning notes.
 - **Isn't:** a product, a hosted service, or a benchmark built on real compensation data. Every scenario is synthetic and labeled as such. Volume is a non-goal — scenario quality is the whole artifact.
 
 ## Quickstart
@@ -59,16 +59,16 @@ Adding a model is a one-line edit to the `MODELS` registry in `comp_evals/runner
 ### Methodology notes
 
 - **Scenarios** are grounded in publicly described comp practice (Radford/Mercer-style leveling frameworks; US Equal Pay Act / Title VII concepts at a conceptual level; standard vesting mechanics). They are illustrative, not legal advice.
-- **Grading** is a single LLM judge, not a panel of human experts. Before building anything else, the judge's per-axis scoring was measured for consistency (repeat-grading variance <= 1 point) so the leaderboard is meaningful.
-- **Reproducibility:** every `RESULTS.md` header records the judge model, judge prompt version, and run date.
+- **Grading** is LLM-as-judge, not a panel of human experts. Before building anything else, the judge's per-axis scoring was measured for consistency (repeat-grading variance <= 1 point) so the leaderboard is meaningful. Because one model under test (Claude) shares a family with the default judge, runs use a **second, independent judge (GPT)** and report per-judge scores plus a judge-agreement read — so a self-preference objection can be checked, not waved away. Grading is blind to which model wrote each answer.
+- **Reproducibility:** every `RESULTS.md` header records the judges, judge prompt version, run date, and a model-separation statistic.
 
 ## Limitations
 
 This is an honest, small artifact — read the numbers as a directional signal, not ground truth:
 
 - **Synthetic scenarios.** No real compensation data is used, by design (privacy, and credibility). Real-world distributions may differ.
-- **LLM judge, not human experts.** The scoring diverges from a human-scored approach; the judge can share blind spots with the models it grades.
-- **Small n.** 16 scenarios across 4 categories. Strong models cluster near the ceiling, so small score differences should not be over-interpreted.
+- **LLM judge, not human experts.** The scoring diverges from a human-scored approach, and the judges can share blind spots with the models they grade. In practice the two judges have shown a visible leniency gap (each is somewhat kinder to its own family), which can exceed the gap between the models — so read the per-judge table, not just the pooled leaderboard.
+- **Small n and near-ceiling.** 24 scenarios across 4 categories. Strong frontier models rarely take these traps and cluster near the top (separation well under 1 point on a 0–12 scale), so small differences should not be over-interpreted. Widening the separation is an open direction: harder/adversarial scenarios and a stricter judge rubric.
 
 ## Development
 
