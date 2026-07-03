@@ -1,0 +1,6 @@
+theme: jekyll-theme-cayman
+title: comp-evals
+description: >-
+  Frontier models scored on synthetic compensation-reasoning scenarios,
+  judged by two independent LLMs.
+show_downloads: false

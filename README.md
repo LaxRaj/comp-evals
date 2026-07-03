@@ -6,7 +6,7 @@ An open-source eval harness that scores frontier models on **synthetic compensat
 
 The four axes are inspired by [Compa](https://compa.as)'s public Evals page. This project is **not** a claim about Compa's internal methodology, and it is **not** affiliated with Compa.
 
-See [`RESULTS.md`](./RESULTS.md) for the latest leaderboard.
+**📊 Live leaderboard: https://laxraj.github.io/comp-evals/** — or see [`RESULTS.md`](./RESULTS.md).
 
 ## What this is (and isn't)
 

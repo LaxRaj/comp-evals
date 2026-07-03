@@ -15,7 +15,7 @@ from comp_evals import results
 from comp_evals.grader import ALL_JUDGES, JUDGE_MODEL, JUDGE_PROMPT_VERSION, JUDGES, grade
 from comp_evals.loader import load_all_scenarios, load_scenario
 from comp_evals.models import AXES, Grade
-from comp_evals.report import Report, build_report, render_markdown
+from comp_evals.report import Report, build_report, render_markdown, render_site
 from comp_evals.runner import ALL_MODELS, DEFAULT_MODEL, MODELS, run_scenario
 
 app = typer.Typer(help="Eval harness scoring frontier models on comp-reasoning scenarios.")
@@ -320,9 +320,13 @@ def report(
     output: Path = typer.Option(
         None, help="Markdown output path (default: RESULTS.md at the repo root)."
     ),
+    site: bool = typer.Option(
+        True, "--site/--no-site", help="Also write docs/index.md for the GitHub Pages leaderboard."
+    ),
 ) -> None:
     """Aggregate a run's grades into RESULTS.md (per-model, per-axis, per-category,
-    and the most-failed traps) and print a leaderboard to the terminal."""
+    and the most-failed traps) and print a leaderboard to the terminal. Also emits
+    the GitHub Pages leaderboard page (docs/index.md) unless --no-site."""
     if run == "latest":
         run_path = results.latest_run_dir()
         if run_path is None:
@@ -337,9 +341,16 @@ def report(
         console.print("[red]No grades in this run — nothing to report.[/red]")
         raise typer.Exit(code=1)
 
+    repo_root = results.RESULTS_ROOT.parent
     md = render_markdown(rep)
-    out_path = output or (results.RESULTS_ROOT.parent / "RESULTS.md")
+    out_path = output or (repo_root / "RESULTS.md")
     out_path.write_text(md)
+
+    site_path: Path | None = None
+    if site:
+        site_path = repo_root / "docs" / "index.md"
+        site_path.parent.mkdir(parents=True, exist_ok=True)
+        site_path.write_text(render_site(rep))
 
     console.print(
         Panel(
@@ -347,7 +358,8 @@ def report(
             f"Judges: [magenta]{', '.join(rep.judges)}[/magenta] ({rep.judge_prompt_version})\n"
             f"Models: {', '.join(rep.models)} · Scenarios: {rep.scenario_count} · "
             f"Grades: {rep.grade_count}\n"
-            f"Wrote [green]{out_path}[/green]",
+            f"Wrote [green]{out_path}[/green]"
+            + (f"\nWrote [green]{site_path}[/green] (Pages leaderboard)" if site_path else ""),
             title="comp-evals report",
         )
     )

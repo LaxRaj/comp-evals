@@ -2,7 +2,7 @@
 
 from comp_evals import results
 from comp_evals.models import AXES, AxisScore, Grade
-from comp_evals.report import build_report, render_markdown
+from comp_evals.report import build_report, render_markdown, render_site
 
 
 def _grade(scenario_id: str, model: str, judge: str, score: int) -> Grade:
@@ -68,3 +68,13 @@ def test_render_markdown_has_all_sections(tmp_path, monkeypatch) -> None:
         assert section in md, f"missing section: {section}"
     assert "JUDGE_PROMPT_V1" in md
     assert "2026-07-02" in md
+
+
+def test_render_site_has_front_matter_and_link(tmp_path, monkeypatch) -> None:
+    site = render_site(build_report(_seed_run(tmp_path, monkeypatch)))
+    assert site.startswith("---\n")  # Jekyll front matter
+    assert "title: comp-evals results" in site
+    assert "github.com/LaxRaj/comp-evals" in site  # link back to the repo
+    # leading H1 dropped (theme banner shows the title instead), tables retained
+    assert not site.lstrip("-\n").startswith("# comp-evals results")
+    assert "## Leaderboard" in site

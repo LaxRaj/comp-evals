@@ -298,3 +298,29 @@ def render_markdown(report: Report) -> str:
     )
     L.append("")
     return "\n".join(L)
+
+
+# GitHub repo, linked from the published leaderboard page.
+REPO_URL = "https://github.com/LaxRaj/comp-evals"
+
+
+def render_site(report: Report) -> str:
+    """The RESULTS.md leaderboard as a Jekyll page for GitHub Pages.
+
+    Adds front matter (the Cayman theme renders title/description as a banner, so
+    the body's leading H1 is dropped to avoid duplication) and a link back to the
+    repo. Reuses `render_markdown` so the page never drifts from RESULTS.md.
+    """
+    body = render_markdown(report)
+    heading = "# comp-evals results\n"
+    if body.startswith(heading):
+        body = body[len(heading):].lstrip("\n")
+    front_matter = (
+        "---\n"
+        "title: comp-evals results\n"
+        "description: Frontier models on synthetic compensation-reasoning scenarios, "
+        "judged by two independent LLMs.\n"
+        "---\n\n"
+    )
+    link = f"[View the code and reproduce on GitHub →]({REPO_URL})\n\n"
+    return front_matter + link + body
